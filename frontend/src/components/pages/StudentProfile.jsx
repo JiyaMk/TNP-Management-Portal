@@ -21,8 +21,8 @@ const StudentProfile = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
-      <Card className="w-full max-w-2xl p-8 shadow-lg rounded-xl bg-white">
+    <div className="flex justify-center items-center min-h-screen p-10">
+      <Card className="w-full max-w-2xl p-8 shadow-lg rounded-xl ">
         <CardHeader>
           <CardTitle className="text-center text-3xl font-extrabold text-gray-800">Student Profile</CardTitle>
         </CardHeader>
