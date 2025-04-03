@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./components/mode-toggle";
 import StudentProfile from "./components/pages/StudentProfile";
+import CompanyProfile from "./components/pages/CompanyProfile";
 import StudentDashboard from "./components/pages/StudentDashboard";
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
         <ModeToggle></ModeToggle>
         <Button variant="default">Default Button</Button>
       </div> */}
-    <StudentProfile/>
+    
+    <CompanyProfile />;
     </ThemeProvider>
   );
 }

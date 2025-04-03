@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+
+body {
+  font-family: "Raleway", sans-serif;
+}
+
+.company-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.company-card {
+  width: 400px;
+  padding: 30px;
+  background-color: #eee;
+  color: #333;
+  border: 2px solid #c2d6ff;
+  border-radius: 40px 0 40px 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.company-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #444;
+}
+
+.company-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.company-label {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.company-input {
+  width: 100%;
+  padding-left: 40px;
+  height: 40px;
+  font-size: 14px;
+  border: 1px solid #dadada;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-repeat: no-repeat;
+  background-position: 10px center;
+}
+
+/* Adding Icons to Inputs */
+#company-name {
+  background-image: url("../images/icon_name.png");
+}
+
+#role {
+  background-image: url("../images/job.png");
+}
+
+#stipend {
+  background-image: url("../images/money.png");
+}
+
+#location {
+  background-image: url("../images/location.png");
+}
+
+#submission-date {
+  background-image: url("../images/calendar.png");
+}
+
+.company-submit {
+  background-color: #cc7a66;
+  border: none;
+  padding: 10px 25px;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.company-submit:hover {
+  background-color: #ff9980;
+}
