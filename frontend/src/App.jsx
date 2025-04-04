@@ -1,18 +1,19 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // ✅ Correct import
 import { ThemeProvider } from "@/components/theme-provider";
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "./components/mode-toggle";
 import StudentProfile from "./components/pages/StudentProfile";
 import StudentDashboard from "./components/pages/StudentDashboard";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      {/* <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-4">
-        <h1 className="text-3xl font-bold mb-6">ShadCN Theme & Button Demo</h1>
-        <ModeToggle></ModeToggle>
-        <Button variant="default">Default Button</Button>
-      </div> */}
-    <StudentProfile/>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<StudentDashboard />} />
+          <Route path="/profile" element={<StudentProfile />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 }
