@@ -13,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<StudentDashboard />} />
           <Route path="/profile" element={<StudentProfile />} />
+          <Route path="/company-profile" element={<CompanyProfile/>} />
         </Routes>
       </Router>
     </ThemeProvider>
