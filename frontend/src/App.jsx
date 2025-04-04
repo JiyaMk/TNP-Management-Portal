@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // ✅ Correct import
 import { ThemeProvider } from "@/components/theme-provider";
 import StudentProfile from "./components/pages/StudentProfile";
+import CompanyProfile from "./components/pages/CompanyProfile";
 import StudentDashboard from "./components/pages/StudentDashboard";
 import Navbar from "./components/Navbar";
 
