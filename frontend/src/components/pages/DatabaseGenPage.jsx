@@ -5,8 +5,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const fields = [
   "Name", "Roll No", "10th Marks", "12th Marks", "Backlogs", "Phone Number", "Year", "Semester", 
-  "CGPA"
+  "Branch", "CGPA"
 ];
+
+const branches = ["CSE", "ECE", "IT", "ECE-AI", "AI-ML", "MECH", "CIVIL"];
 
 const demoStudents = Array.from({ length: 20 }, (_, i) => {
   const sgpas = Array.from({ length: 8 }, () => (Math.random() * 4 + 6).toFixed(2));
@@ -20,7 +22,7 @@ const demoStudents = Array.from({ length: 20 }, (_, i) => {
     "Phone Number": `98765432${String(i).padStart(2, "0")}`,
     Year: Math.ceil((i + 1) / 5),
     Semester: ((i % 8) + 1),
-    ...Object.fromEntries(fields.slice(8, 16).map((f, index) => [f, sgpas[index]])),
+    Branch: branches[Math.floor(Math.random() * branches.length)],
     CGPA: parseFloat(cgpa)
   };
 });
@@ -28,7 +30,7 @@ const demoStudents = Array.from({ length: 20 }, (_, i) => {
 const DatabasePage = () => {
   const [visibleFields, setVisibleFields] = useState(fields);
   const [students] = useState(demoStudents);
-  const [filters, setFilters] = useState({ tenth: 0, twelfth: 0, cgpa: 0, backlog: "all" });
+  const [filters, setFilters] = useState({ tenth: 0, twelfth: 0, cgpa: 0, backlog: "all", branch: "all" });
 
   const toggleField = (field) => {
     setVisibleFields((prev) => prev.includes(field) ? prev.filter(f => f !== field) : [...prev, field]);
@@ -46,11 +48,12 @@ const DatabasePage = () => {
     student["10th Marks"] >= filters.tenth &&
     student["12th Marks"] >= filters.twelfth &&
     student.CGPA >= filters.cgpa &&
-    (filters.backlog === "all" || (filters.backlog === "0" ? student.Backlogs === 0 : student.Backlogs > 0))
+    (filters.backlog === "all" || (filters.backlog === "0" ? student.Backlogs === 0 : student.Backlogs > 0)) &&
+    (filters.branch === "all" || student.Branch === filters.branch)
   );
 
   return (
-    <div className="flex flex-col p-6 h-screen ">
+    <div className="flex flex-col p-6 h-screen">
       <div className="flex gap-4 mb-6">
         <Sheet>
           <SheetTrigger asChild>
@@ -60,7 +63,7 @@ const DatabasePage = () => {
           </SheetTrigger>
           <SheetContent side="left" className="p-6 w-80">
             <h2 className="text-xl font-semibold mb-4">Select Fields</h2>
-            <Button className="w-full mb-3 bg-blue-500 " onClick={toggleAllFields}>
+            <Button className="w-full mb-3 bg-blue-500" onClick={toggleAllFields}>
               {visibleFields.length === fields.length ? "Deselect All" : "Select All"}
             </Button>
             <div className="max-h-[100vh] overflow-y-auto">
@@ -91,14 +94,20 @@ const DatabasePage = () => {
                 <option value="0">No Backlogs</option>
                 <option value="1">With Backlogs</option>
               </select>
+              <select name="branch" className="w-full p-2 border rounded bg-transparent" onChange={handleFilterChange}>
+                <option value="all">All Branches</option>
+                {branches.map(branch => (
+                  <option key={branch} value={branch}>{branch}</option>
+                ))}
+              </select>
             </div>
           </SheetContent>
         </Sheet>
       </div>
 
-      <div className="flex-1 overflow-auto   p-4 shadow rounded-lg">
+      <div className="flex-1 overflow-auto p-4 shadow rounded-lg">
         <table className="w-full border text-sm">
-          <thead className="bg-gray-500 ">
+          <thead className="bg-gray-500">
             <tr>
               {visibleFields.map((field) => (
                 <th key={field} className="border px-4 py-2 text-left">{field}</th>
@@ -107,7 +116,7 @@ const DatabasePage = () => {
           </thead>
           <tbody>
             {filteredStudents.map((student, index) => (
-              <tr key={index} className="">
+              <tr key={index}>
                 {visibleFields.map((field) => (
                   <td key={field} className="border px-4 py-2">{student[field]}</td>
                 ))}
