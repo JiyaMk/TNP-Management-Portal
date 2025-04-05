@@ -109,6 +109,7 @@ const StudentProfile = () => {
               { label: "10th Marks", name: "tenthMarks", type: "number" },
               { label: "12th Marks", name: "twelfthMarks", type: "number" },
               { label: "Resume Link", name: "resumeLink", type: "url" },
+              { label: "Certifications", name: "certifications", type: "text" },
               { label: "Semester", name: "semester", type: "number" },
             ].map(({ label, name, type }) => (
               <div key={name}>
