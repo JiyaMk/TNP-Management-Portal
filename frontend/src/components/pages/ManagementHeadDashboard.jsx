@@ -43,20 +43,28 @@ const ManagementHeadDashboard = () => {
 
       {/* Progress Section */}
       <div className="p-4 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Hi [Name], Your data has been sent to:</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          Hi [Name], Your data has been sent to:
+        </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {progressData.slice(0, showAll ? progressData.length : 5).map((item, index) => (
-            <Card key={index} className="mb-2">
-              <CardContent className="p-4 flex flex-col items-center text-center">
-                <span className="text-lg font-medium">{item.company}</span>
-                <span className="text-gray-500">sent on: {item.date}</span>
-              </CardContent>
-            </Card>
-          ))}
+          {progressData
+            .slice(0, showAll ? progressData.length : 5)
+            .map((item, index) => (
+              <Card key={index} className="mb-2">
+                <CardContent className="p-4 flex flex-col items-center text-center">
+                  <span className="text-lg font-medium">{item.company}</span>
+                  <span className="text-gray-500">sent on: {item.date}</span>
+                </CardContent>
+              </Card>
+            ))}
         </div>
         <div className="flex justify-center items-center">
           {progressData.length > 6 && (
-            <Button variant="outline" className="mt-4 w-32 justify-center flex items-center" onClick={() => setShowAll(!showAll)}>
+            <Button
+              variant="outline"
+              className="mt-4 w-32 justify-center flex items-center"
+              onClick={() => setShowAll(!showAll)}
+            >
               {showAll ? "Show Less" : "See More"}
             </Button>
           )}
@@ -68,7 +76,7 @@ const ManagementHeadDashboard = () => {
         <h2 className="text-xl font-semibold mb-4">Company Listings</h2>
         {listingsData.map((item, index) => (
           <Card key={index} className="mb-2">
-            <CardContent className="p-4 flex justify-between items-center">
+            <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
               {/* Company Name and Date */}
               <div>
                 <span className="font-medium">{item.company}</span>
@@ -76,12 +84,21 @@ const ManagementHeadDashboard = () => {
               </div>
 
               {/* Buttons */}
-              <div className="flex gap-2">
-             <Link to="database-gen-page">   <Button variant="outline" onClick={() => handleGenerateDatabase(item)}>
-                  Generate Database
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <Link to="database-gen-page" className="w-full sm:w-40">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => handleGenerateDatabase(item)}
+                  >
+                    Generate Database
+                  </Button>
                 </Link>
-                <Button variant="default" onClick={() => handleNotify(item)}>
+                <Button
+                  variant="default"
+                  className="w-full sm:w-40"
+                  onClick={() => handleNotify(item)}
+                >
                   Notify
                 </Button>
               </div>

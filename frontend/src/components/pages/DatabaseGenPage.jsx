@@ -4,11 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const fields = [
-  "Name", "Roll No", "10th Marks", "12th Marks", "Backlogs", "Phone Number", "Year", "Semester", 
-  "Branch", "CGPA"
+  "Name", "Roll No", "10th Marks", "12th Marks", "Backlogs", "Phone Number",
+  "Year", "Semester", "Branch", "CGPA", "Certifications"
 ];
 
 const branches = ["CSE", "ECE", "IT", "ECE-AI", "AI-ML", "MECH", "CIVIL"];
+
+const certificationsList = [
+  "Certified in Python Development", "Completed Web Dev Bootcamp",
+  "AI-ML Internship Certification", "Certified Ethical Hacker",
+  "AWS Cloud Practitioner", "Full Stack Development Bootcamp",
+  "Google Cybersecurity Certification", "Blockchain Essentials Certified",
+  "Microsoft Azure Fundamentals", "Data Science Professional Certificate"
+];
 
 const demoStudents = Array.from({ length: 20 }, (_, i) => {
   const sgpas = Array.from({ length: 8 }, () => (Math.random() * 4 + 6).toFixed(2));
@@ -23,7 +31,8 @@ const demoStudents = Array.from({ length: 20 }, (_, i) => {
     Year: Math.ceil((i + 1) / 5),
     Semester: ((i % 8) + 1),
     Branch: branches[Math.floor(Math.random() * branches.length)],
-    CGPA: parseFloat(cgpa)
+    CGPA: parseFloat(cgpa),
+    Certifications: certificationsList[Math.floor(Math.random() * certificationsList.length)]
   };
 });
 
@@ -118,7 +127,13 @@ const DatabasePage = () => {
             {filteredStudents.map((student, index) => (
               <tr key={index}>
                 {visibleFields.map((field) => (
-                  <td key={field} className="border px-4 py-2">{student[field]}</td>
+                  <td key={field} className="border px-4 py-2">
+                    {field === "Certifications" ? (
+                      <span className="block max-w-xs truncate">{student[field]}</span>
+                    ) : (
+                      student[field]
+                    )}
+                  </td>
                 ))}
               </tr>
             ))}
