@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const fields = [
   "Name", "Roll No", "10th Marks", "12th Marks", "Backlogs", "Phone Number", "Year", "Semester", 
-  "SGPA1", "SGPA2", "SGPA3", "SGPA4", "SGPA5", "SGPA6", "SGPA7", "SGPA8", "CGPA"
+  "CGPA"
 ];
 
 const demoStudents = Array.from({ length: 20 }, (_, i) => {
