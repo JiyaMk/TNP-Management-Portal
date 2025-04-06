@@ -23,6 +23,8 @@ function App() {
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/SignUp" element={<SignUpPage/>} />
           <Route path="/database-gen-page" element={<DatabaseGenPage/>} />
+          
+          
         </Routes>
       </Router>
     </ThemeProvider>
