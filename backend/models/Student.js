@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const studentProfileSchema = new mongoose.Schema(
     {
@@ -7,9 +8,19 @@ const studentProfileSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        email: {
+            type: String,
+            required: true,
+            unique: true
+        },
         password: {
             type: String,
             required: true
+        },
+        role: {
+            type: String,
+            enum: ["student", "pr_head", "management_head"],
+            default: "student"
         },
         rollNumber: {
             type: String,
@@ -52,11 +63,6 @@ const studentProfileSchema = new mongoose.Schema(
             type: [Number],
             default: [] 
         },
-        collegeMail: {
-            type: String,
-            required: true,
-            unique: true
-        },
         personalMail: {
             type: String,
             required: true,
@@ -90,6 +96,10 @@ studentProfileSchema.pre('save', async function (next) {
     }
     next();
 });
+
+studentProfileSchema.methods.isPasswordCorrect = async function(password){
+    return await bcrypt.compare(password, this.password)
+}
 
 
 const Student = mongoose.model('Student', studentProfileSchema);
