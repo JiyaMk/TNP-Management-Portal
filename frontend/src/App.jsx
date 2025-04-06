@@ -8,6 +8,7 @@ import LoginPage from "./components/pages/Login";
 import SignUpPage from "./components/pages/SignUpPage";
 import ManagementHeadDashboard from "./components/pages/ManagementHeadDashboard";
 import DatabaseGenPage from "./components/pages/DatabaseGenPage";
+import ProfileForm from "./components/pages/ProfileForm";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/SignUp" element={<SignUpPage/>} />
           <Route path="/database-gen-page" element={<DatabaseGenPage/>} />
+          <Route path="/form-page" element={<ProfileForm/>} />
           
           
         </Routes>
