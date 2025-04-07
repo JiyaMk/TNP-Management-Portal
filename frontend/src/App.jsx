@@ -8,6 +8,8 @@ import LoginPage from "./components/pages/Login";
 import SignUpPage from "./components/pages/SignUpPage";
 import ManagementHeadDashboard from "./components/pages/ManagementHeadDashboard";
 import DatabaseGenPage from "./components/pages/DatabaseGenPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ProfileForm from "./components/pages/ProfileForm";
 
 
@@ -24,10 +26,12 @@ function App() {
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/SignUp" element={<SignUpPage/>} />
           <Route path="/database-gen-page" element={<DatabaseGenPage/>} />
+          <Route path="/ProfileForm" element={<ProfileForm/>} />
           <Route path="/form-page" element={<ProfileForm/>} />
           
           
         </Routes>
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnFocusLoss draggable pauseOnHover theme="dark" />
       </Router>
     </ThemeProvider>
   );
