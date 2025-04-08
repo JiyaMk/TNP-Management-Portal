@@ -12,5 +12,7 @@ export const register = (token, formData) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 export const login = (email, password) => api.post('/auth/login', { email, password });
+export const companyRegister = (name, role, stipend, location, lastDate) => api.post('/company/register', { name, role, stipend, location, lastDate });
+export const getCompanyDetails = () => api.get('/company/get-details');
 
 export default api;
