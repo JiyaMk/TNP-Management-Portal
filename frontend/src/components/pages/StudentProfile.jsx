@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const StudentProfile = () => {
-  const [isEditing, setIsEditing] = useState(true); // First-time user starts in edit mode
+  const [isEditing, setIsEditing] = useState(true); 
   const [profile, setProfile] = useState({
     fullName: "",
     image: "",
@@ -73,9 +73,9 @@ const StudentProfile = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen p-10">
-      <Card className="w-full max-w-2xl p-8 shadow-lg rounded-xl">
+      <Card className="w-full max-w-2xl p-8 shadow-lg rounded-xl ">
         <CardHeader className="flex flex-col items-center">
-          <CardTitle className="text-center text-3xl font-extrabold mt-2">
+          <CardTitle className="text-center text-3xl font-extrabold mt-2 text-[#3c8c84] ">
             Student Profile
           </CardTitle>
 
@@ -88,18 +88,18 @@ const StudentProfile = () => {
             />
           </label>
           {isEditing && (
-            <input
-              id="profileImage"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="mt-2"
-            />
+          <input
+          id="profileImage"
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          className="mt-2 block w-50% cursor-pointer rounded-lg border border-[#165507] bg-gray-300 px-1 py-2 text-gray-900 shadow-sm transition-all duration-300 hover:border-[#134306] focus:border-[#0e3a05] focus:ring-2 focus:ring-[#134306]"
+        />        
           )}
         </CardHeader>
 
-        <CardContent>
-          <form className="space-y-4">
+        <CardContent >
+          <form className="space-y-4 ">
             {[
               { label: "Full Name", name: "fullName", type: "text" },
               { label: "Roll Number", name: "rollNumber", type: "text" },
@@ -112,10 +112,11 @@ const StudentProfile = () => {
               { label: "Certifications", name: "certifications", type: "text" },
               { label: "Semester", name: "semester", type: "number" },
             ].map(({ label, name, type }) => (
-              <div key={name}>
-                <Label>{label}</Label>
+              <div key={name}  >
+                <Label >{label}</Label>
                 {isEditing ? (
                   <Input
+                  className={"border-[#3c8c84] mt-2" }
                     type={type}
                     name={name}
                     value={profile[name]}
@@ -123,7 +124,7 @@ const StudentProfile = () => {
                     placeholder={`Enter ${label.toLowerCase()}`}
                   />
                 ) : (
-                  <p className="p-2 border rounded">{profile[name] || `Enter ${label.toLowerCase()}`}</p>
+                  <p className="p-2 border rounded  border-[#3c8c84] mt-2">{profile[name] || `Enter ${label.toLowerCase()}`}</p>
                 )}
               </div>
             ))}
@@ -137,6 +138,7 @@ const StudentProfile = () => {
                     <Label>SGPA {index + 1}</Label>
                     {isEditing ? (
                       <Input
+                      className={"border-[#3c8c84] mt-2" }
                         type="text"
                         value={sgpaValue}
                         onChange={(e) => handleSGPAChange(index, e.target.value)}
@@ -156,7 +158,7 @@ const StudentProfile = () => {
                 e.preventDefault();
                 setIsEditing(!isEditing); // Toggle edit mode
               }}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition"
+              className="w-full bg-[#3c8c84] hover:bg-[#3c8c70] text-white font-bold py-3 px-6 rounded-lg transition"
             >
               {isEditing ? "Save Profile" : "Edit Profile"}
             </Button>

@@ -39,7 +39,7 @@ const ManagementHeadDashboard = () => {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-center font-extrabold text-3xl">Dashboard</h1>
+      <h1 className="text-center font-extrabold text-3xl text-[#3c8c84]">Dashboard</h1>
 
       {/* Progress Section */}
       <div className="p-4 rounded-lg shadow-md">
@@ -50,7 +50,7 @@ const ManagementHeadDashboard = () => {
           {progressData
             .slice(0, showAll ? progressData.length : 5)
             .map((item, index) => (
-              <Card key={index} className="mb-2">
+              <Card key={index} className="mb-2 border-[#3c8c84]">
                 <CardContent className="p-4 flex flex-col items-center text-center">
                   <span className="text-lg font-medium">{item.company}</span>
                   <span className="text-gray-500">sent on: {item.date}</span>
@@ -75,8 +75,8 @@ const ManagementHeadDashboard = () => {
       <div className="p-4 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Company Listings</h2>
         {listingsData.map((item, index) => (
-          <Card key={index} className="mb-2">
-            <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
+          <Card key={index} className="mb-2 border-[#3c8c84]">
+            <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4 ">
               {/* Company Name and Date */}
               <div>
                 <span className="font-medium">{item.company}</span>
@@ -95,8 +95,9 @@ const ManagementHeadDashboard = () => {
                   </Button>
                 </Link>
                 <Button
+                  
                   variant="default"
-                  className="w-full sm:w-40"
+                  className="w-full sm:w-40 bg-[#3c8c84]"
                   onClick={() => handleNotify(item)}
                 >
                   Notify

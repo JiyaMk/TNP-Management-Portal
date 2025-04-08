@@ -1,106 +1,66 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import "./CompanyProfile.css"; // Import the CSS file
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "@/utils/apiRequest";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const CompanyProfile = () => {
-  const [name, setCompanyName] = useState("");
-  const [role, setRole] = useState(""); 
-  const [stipend, setStipend] = useState("");
-  const [location, setLocation] = useState("");
-  const [lastDate, setLastDate] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    role: "",
+    stipend: "",
+    location: "",
+    lastDate: "",
+  });
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/company/register", { name, role, stipend, location, lastDate,});
+      await api.post("/company/register", formData);
       toast.success("Company Profile added successfully!");
-      setTimeout(() => {
-        navigate("/student-dashboard");
-      }, 1000);
+      setTimeout(() => navigate("/student-dashboard"), 1000);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to add company profile");
     }
-  }
+  };
+
   return (
-    <div className="company-form-container">
-      <Card className="company-card">
-        <CardHeader>
-          <CardTitle className="company-title">Company Profile</CardTitle>
+    <div className="flex justify-center items-center min-h-screen  px-4">
+      <Card className="w-full max-w-lg shadow-lg p-8  rounded-2xl">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold ">Company Profile</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="company-form">
-            <div className="company-input-group">
-              <Label className="company-label">Company Name</Label>
-              <Input
-                type="text"
-                id="company-name"
-                placeholder="Enter Company Name"
-                className="company-input"
-                required
-                value={name}
-                onChange={(e) => setCompanyName(e.target.value)}
-              />
-            </div>
-
-            <div className="company-input-group">
-              <Label className="company-label">Role</Label>
-              <Input
-                type="text"
-                id="role"
-                placeholder="Enter Role"
-                className="company-input"
-                required
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              />
-            </div>
-
-            <div className="company-input-group">
-              <Label className="company-label">Stipend</Label>
-              <Input
-                type="number"
-                id="stipend"
-                placeholder="Enter Stipend (if any)"
-                className="company-input"
-                value={stipend}
-                onChange={(e) => setStipend(e.target.value)}
-              />
-            </div>
-
-            <div className="company-input-group">
-              <Label className="company-label">Location</Label>
-              <Input
-                type="text"
-                id="location"
-                placeholder="Enter Location"
-                className="company-input"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </div>
-
-            <div className="company-input-group">
-              <Label className="company-label">Last Date for Database Submission</Label>
-              <Input
-                type="date"
-                id="submission-date"
-                className="company-input"
-                required
-                value={lastDate}
-                onChange={(e) => setLastDate(e.target.value)}
-              />
-            </div>
-
-            <Button type="submit" className="company-submit" onClick={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {Object.entries(formData).map(([key, value]) => (
+              <div key={key} className="flex flex-col">
+                <Label className="capitalize font-semibold  mb-1">
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </Label>
+                <Input
+                  type={key === "lastDate" ? "date" : key === "stipend" ? "number" : "text"}
+                  name={key}
+                  value={value}
+                  onChange={handleChange}
+                  placeholder={`Enter ${key.replace(/([A-Z])/g, " $1").trim()}`}
+                  required={key !== "stipend"}
+                  className="border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg p-2"
+                />
+              </div>
+            ))}
+            <Button 
+              type="submit" 
+              className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all">
               Submit
             </Button>
           </form>

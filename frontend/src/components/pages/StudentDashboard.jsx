@@ -40,13 +40,13 @@ const StudentDashboard = () => {
   return (
     
     <div className="p-6 space-y-6">
-      <h1 className="text-center font-extrabold text-3xl ">Dashboard</h1>
+      <h1 className="text-center font-extrabold text-3xl text-[#3c8c84] ">Dashboard</h1>
       {/* Progress Section */}
       <div className=" p-4 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Hi [Name], Your data has been sent to:</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {progressData.slice(0, showAll ? progressData.length : 5).map((item, index) => (
-            <Card key={index} className="mb-2">
+            <Card key={index} className="mb-2 border-[#3c8c84]">
               <CardContent className="p-4 flex flex-col items-center text-center">
                 <span className="text-lg font-medium">{item.company}</span>
                 <span className="text-gray-500">sent on : {item.date}</span>
@@ -56,7 +56,7 @@ const StudentDashboard = () => {
         </div>
         <div className="flex justify-center items-center">
         {progressData.length > 6 && (
-          <Button variant="outline" className="mt-4 w-32 justify-center flex items-center" onClick={() => setShowAll(!showAll)}>
+          <Button variant="outline" className="mt-4 w-32 justify-center flex items-center " onClick={() => setShowAll(!showAll)}>
             {showAll ? "Show Less" : "See More"}
           </Button>
         )}
@@ -67,7 +67,7 @@ const StudentDashboard = () => {
       <div className=" p-15 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Company Listings</h2>
         {listingsData.map((item, index) => (
-          <Card key={index} className="mb-4 shadow-md">
+          <Card key={index} className="mb-4 shadow-md border-[#3c8c84]">
           <CardContent className="p-4">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center">
               <div className="mb-2 md:mb-0">

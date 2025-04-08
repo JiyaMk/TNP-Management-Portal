@@ -63,16 +63,16 @@ const DatabasePage = () => {
 
   return (
     <div className="flex flex-col p-6 h-screen">
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 mb-6 ">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2 ">
               <FaList className="text-xl" /> Fields
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-6 w-80">
             <h2 className="text-xl font-semibold mb-4">Select Fields</h2>
-            <Button className="w-full mb-3 bg-blue-500" onClick={toggleAllFields}>
+            <Button className="w-full mb-3  bg-[#3c8c84]" onClick={toggleAllFields}>
               {visibleFields.length === fields.length ? "Deselect All" : "Select All"}
             </Button>
             <div className="max-h-[100vh] overflow-y-auto">
@@ -88,7 +88,7 @@ const DatabasePage = () => {
 
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2 ">
               <FaFilter className="text-xl" /> Filters
             </Button>
           </SheetTrigger>
@@ -116,7 +116,7 @@ const DatabasePage = () => {
 
       <div className="flex-1 overflow-auto p-4 shadow rounded-lg">
         <table className="w-full border text-sm">
-          <thead className="bg-gray-500">
+          <thead className="bg-[#3c8c84] text-white">
             <tr>
               {visibleFields.map((field) => (
                 <th key={field} className="border px-4 py-2 text-left">{field}</th>
@@ -142,7 +142,7 @@ const DatabasePage = () => {
       </div>
 
       <div className="mt-4 flex justify-end">
-        <Button className="bg-blue-600 text-white px-4 py-2 rounded dark:bg-blue-500">Send DB</Button>
+        <Button className="bg-[#3c8c84] text-white px-4 py-2 rounded">Send DB</Button>
       </div>
     </div>
   );
