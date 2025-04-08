@@ -3,62 +3,89 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import api from "@/utils/apiRequest";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProfileForm = () => {
+  const navigate = useNavigate();
+  const [profilePic, setProfilePic] = useState(null);
+
   const [profile, setProfile] = useState({
-    fullName: "",
-    image: "",
+    name: "",
+    personalMail: "",
+    password: "",
     rollNumber: "",
     branch: "",
     year: "",
-    phone: "",
-    semester: "",
-    sgpa: [],
-    tenthMarks: "",
-    twelfthMarks: "",
-    collegeEmail: "",
-    personalEmail: "",
+    phoneNumber: "",
+    marks10th: "",
+    marks12th: "",
     resumeLink: "",
     certifications: "",
+    backlog: "",
+    semester: "",
+    SGPA: [],
   });
 
-  // Load profile from Local Storage
-  useEffect(() => {
-    const savedProfile = JSON.parse(localStorage.getItem("studentProfile"));
-    if (savedProfile) {
-      setProfile(savedProfile);
-    }
-  }, []);
-
-  // Handle Input Change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => {
-      const updatedProfile = { ...prev, [name]: value };
-
-      // If updating semester, reset SGPA fields
+      const updated = { ...prev, [name]: value };
       if (name === "semester") {
-        const semesterCount = parseInt(value, 10) || 0;
-        updatedProfile.sgpa = new Array(semesterCount).fill("");
+        const count = parseInt(value, 10) || 0;
+        updated.SGPA = new Array(count).fill("");
       }
-
-      return updatedProfile;
+      return updated;
     });
   };
 
-  // Handle SGPA Change
   const handleSGPAChange = (index, value) => {
     setProfile((prev) => {
-      const updatedSGPA = [...prev.sgpa];
+      const updatedSGPA = [...prev.SGPA];
       updatedSGPA[index] = value;
-      return { ...prev, sgpa: updatedSGPA };
+      return { ...prev, SGPA: updatedSGPA };
     });
   };
 
-  // Handle Save
-  const handleSave = () => {
-    localStorage.setItem("studentProfile", JSON.stringify(profile));
-    alert("Profile saved successfully!");
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("registerToken");
+    if (!token) {
+      toast.error("Token not found.");
+      return;
+    }
+
+    const formData = new FormData();
+    Object.entries(profile).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((item, i) => {
+          formData.append(`${key}[${i}]`, item);
+        });
+      } else {
+        formData.append(key, value);
+      }
+    });
+
+    if (profilePic) {
+      formData.append("profilePic", profilePic);
+    }
+
+    try {
+      await api.post("/auth/register", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Registration successful!");
+      navigate("/student-dashboard");
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || "Registration failed. Try again."
+      );
+    }
   };
 
   return (
@@ -71,17 +98,20 @@ const ProfileForm = () => {
         </CardHeader>
 
         <CardContent>
-          <form className="space-y-4">
+          <form onSubmit={handleRegister} className="space-y-4">
             {[
-              { label: "Full Name", name: "fullName", type: "text" },
+              { label: "Full Name", name: "name", type: "text" },
+              { label: "Personal Email", name: "personalMail", type: "email" },
+              { label: "Password", name: "password", type: "password" },
               { label: "Roll Number", name: "rollNumber", type: "text" },
               { label: "Branch", name: "branch", type: "text" },
               { label: "Year", name: "year", type: "number" },
-              { label: "Phone Number", name: "phone", type: "tel" },
-              { label: "10th Marks", name: "tenthMarks", type: "number" },
-              { label: "12th Marks", name: "twelfthMarks", type: "number" },
+              { label: "Phone Number", name: "phoneNumber", type: "tel" },
+              { label: "10th Marks", name: "marks10th", type: "number" },
+              { label: "12th Marks", name: "marks12th", type: "number" },
               { label: "Resume Link", name: "resumeLink", type: "url" },
               { label: "Certifications", name: "certifications", type: "text" },
+              { label: "Backlog (if any)", name: "backlog", type: "text" },
               { label: "Semester", name: "semester", type: "number" },
             ].map(({ label, name, type }) => (
               <div key={name}>
@@ -91,35 +121,44 @@ const ProfileForm = () => {
                   name={name}
                   value={profile[name]}
                   onChange={handleChange}
-                  placeholder={`Enter ${label.toLowerCase()}`}
+                  placeholder={`Enter ${label}`}
                 />
               </div>
             ))}
 
-            {/* SGPA Fields (Dynamically Generated) */}
-            {profile.sgpa.length > 0 && (
+            {profile.SGPA.length > 0 && (
               <div>
                 <Label>SGPA</Label>
-                {profile.sgpa.map((sgpaValue, index) => (
-                  <div key={index} className="flex flex-col mt-2">
+                {profile.SGPA.map((value, index) => (
+                  <div key={index} className="mt-2">
                     <Label>SGPA {index + 1}</Label>
                     <Input
-                      type="text"
-                      value={sgpaValue}
-                      onChange={(e) => handleSGPAChange(index, e.target.value)}
-                      placeholder={`Enter SGPA for semester ${index + 1}`}
+                      type="number"
+                      value={value}
+                      onChange={(e) =>
+                        handleSGPAChange(index, e.target.value)
+                      }
+                      placeholder={`SGPA for semester ${index + 1}`}
                     />
                   </div>
                 ))}
               </div>
             )}
 
-            {/* Save Button */}
-            <Button 
-              onClick={handleSave} 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition"
+            <div>
+              <Label>Profile Image</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setProfilePic(e.target.files[0])}
+              />
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
             >
-              Save Profile
+              Register
             </Button>
           </form>
         </CardContent>
