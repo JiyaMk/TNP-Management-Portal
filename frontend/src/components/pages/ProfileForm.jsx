@@ -29,6 +29,13 @@ const ProfileForm = () => {
     SGPA: [],
   });
 
+  
+  const subBranchOptions = {
+    CSE: ["CSE1", "CSE2", "CSE3"],
+    ECE: ["ECE1", "ECE2", "ECE3"],
+    IT: ["IT1", "IT2"],
+  };
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => {
@@ -36,6 +43,9 @@ const ProfileForm = () => {
       if (name === "semester") {
         const count = parseInt(value, 10) || 0;
         updated.SGPA = new Array(count).fill("");
+      }
+      if (name === "branch") {
+        updated.subBranch = ""; // Reset subBranch on branch change
       }
       return updated;
     });
@@ -104,14 +114,14 @@ const ProfileForm = () => {
               { label: "Personal Email", name: "personalMail", type: "email" },
               { label: "Password", name: "password", type: "password" },
               { label: "Roll Number", name: "rollNumber", type: "text" },
-              { label: "Branch", name: "branch", type: "text" },
+              //{ label: "Branch", name: "branch", type: "text" },
               { label: "Year", name: "year", type: "number" },
               { label: "Phone Number", name: "phoneNumber", type: "tel" },
-              { label: "10th Marks", name: "marks10th", type: "number" },
-              { label: "12th Marks", name: "marks12th", type: "number" },
+              { label: "10th Marks (in percentage)", name: "marks10th", type: "number" },
+              { label: "12th Marks (in percentage)", name: "marks12th", type: "number" },
               { label: "Resume Link", name: "resumeLink", type: "url" },
               { label: "Certifications", name: "certifications", type: "text" },
-              { label: "Backlog (if any)", name: "backlog", type: "text" },
+              //{ label: "Backlog (if any)", name: "backlog", type: "text" },
               { label: "Semester", name: "semester", type: "number" },
             ].map(({ label, name, type }) => (
               <div key={name}>
@@ -125,6 +135,61 @@ const ProfileForm = () => {
                 />
               </div>
             ))}
+
+            {/* Branch Dropdown */}
+            <div>
+              <Label>Branch</Label>
+              <select
+                name="branch"
+                value={profile.branch}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded-md"
+              >
+                <option value="">Select Branch</option>
+                <option value="CSE">CSE</option>
+                <option value="ECE">ECE</option>
+                <option>MAE</option>
+                <option value="IT">IT</option>
+                <option>CSE-AI</option>
+                <option>AI/ML</option>
+                <option>ECE-AI</option>
+              </select>
+            </div>
+
+            {/* Sub-branch Dropdown */}
+            {subBranchOptions[profile.branch]?.length > 0 && (
+              <div>
+                <Label>Sub-Branch</Label>
+                <select
+                  name="subBranch"
+                  value={profile.subBranch}
+                  onChange={handleChange}
+                  className="w-full mt-1 p-2 border rounded-md"
+                >
+                  <option value="">Select Sub-Branch</option>
+                  {subBranchOptions[profile.branch].map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Backlog Dropdown */}
+            <div>
+              <Label>Backlog (if any)</Label>
+              <select
+                name="backlog"
+                value={profile.backlog}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded-md"
+              >
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
 
             {profile.SGPA.length > 0 && (
               <div>
