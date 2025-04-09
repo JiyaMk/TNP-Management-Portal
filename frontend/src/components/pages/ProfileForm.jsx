@@ -45,7 +45,7 @@ const ProfileForm = () => {
         updated.SGPA = new Array(count).fill("");
       }
       if (name === "branch") {
-        updated.subBranch = ""; // Reset subBranch on branch change
+        updated.subBranch = ""; 
       }
       return updated;
     });
