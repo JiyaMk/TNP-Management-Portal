@@ -4,6 +4,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+
+const creditsPerSemester = [22, 22, 23, 22, 22, 22, 21, 22];
+
+const calculateCGPA = (sgpaArray, semester) => {
+  let totalPoints = 0;
+  let totalCredits = 0;
+
+  for (let i = 0; i < semester; i++) {
+    const sgpa = parseFloat(sgpaArray[i]);
+    const credits = creditsPerSemester[i];
+
+    if (!isNaN(sgpa)) {
+      totalPoints += sgpa * credits;
+      totalCredits += credits;
+    }
+  }
+
+  return totalCredits === 0 ? "" : (totalPoints / totalCredits).toFixed(2);
+};
+
+
 const StudentProfile = () => {
   const [isEditing, setIsEditing] = useState(true); 
   const [profile, setProfile] = useState({
@@ -21,7 +42,8 @@ const StudentProfile = () => {
     collegeEmail: "",
     personalEmail: "",
     resumeLink: "",
-    backlog: "", 
+    backlog: "",
+    cgpa: "", 
   });
 
   // Sub-branch options like in ProfileForm
@@ -44,6 +66,15 @@ const StudentProfile = () => {
   useEffect(() => {
     localStorage.setItem("studentProfile", JSON.stringify(profile));
   }, [profile]);
+
+  // CGPA calculation
+  useEffect(() => {
+    const semesterCount = parseInt(profile.semester, 10) || 0;
+    const newCGPA = calculateCGPA(profile.sgpa, semesterCount);
+  
+    setProfile((prev) => ({ ...prev, cgpa: newCGPA }));
+  }, [profile.sgpa, profile.semester]);
+  
 
   // Handle Input Change
   const handleChange = (e) => {
@@ -123,7 +154,7 @@ const StudentProfile = () => {
               { label: "12th Marks )in percentage)", name: "twelfthMarks", type: "number" },
               { label: "Resume Link", name: "resumeLink", type: "url" },
               { label: "Certifications", name: "certifications", type: "text" },
-              { label: "Semester", name: "semester", type: "number" },
+              //{ label: "Semester", name: "semester", type: "number" },
             ].map(({ label, name, type }) => (
               <div key={name}  >
                 <Label >{label}</Label>
@@ -162,7 +193,7 @@ const StudentProfile = () => {
                   <option value="ECE-AI">ECE-AI</option>
                 </select>
               ) : (
-                <p className="p-2 border rounded border-[#3c8c84] mt-2">{profile.branch}</p>
+                <p className="p-2 border rounded border-[#3c8c84] mt-2">{profile.branch || "Enter branch"}</p>
               )}
             </div>
 
@@ -205,10 +236,27 @@ const StudentProfile = () => {
                   <option value="No">No</option>
                 </select>
               ) : (
-                <p className="w-full mt-1 p-2 border rounded-md">{profile.backlog}</p>
+                <p className="p-2 border rounded border-[#3c8c84] mt-2">{profile.backlog || "Enter backlog status"}</p>
               )}
             </div>
 
+            {/* No.OF Semester display*/}
+            <div>
+              <Label>Semester</Label>
+              {isEditing ? (
+                <Input
+                  className="border-[#3c8c84] mt-2"
+                  type="number"
+                  name="semester"
+                  value={profile.semester}
+                  onChange={handleChange}
+                  placeholder="Enter semester"
+                />
+              ) : (
+                <p className="p-2 border rounded border-[#3c8c84] mt-2">{profile.semester || "Enter semester"}</p>
+              )}
+            </div>
+            
             {/* SGPA Fields (Dynamically Generated) */}
             {profile.sgpa.length > 0 && (
               <div>
@@ -231,6 +279,17 @@ const StudentProfile = () => {
                 ))}
               </div>
             )}
+
+          
+
+            {/* CGPA Display */}
+            <div>
+              <Label>CGPA</Label>
+              <p className="p-2 border rounded border-[#3c8c84] mt-2 bg-gray-100">
+                {profile.cgpa || "CGPA (calculated automatically)"}
+              </p>
+            </div>
+            
 
             {/* Save or Edit Profile Button */}
             <Button
