@@ -122,7 +122,7 @@ const ProfileForm = () => {
               { label: "Resume Link", name: "resumeLink", type: "url" },
               { label: "Certifications", name: "certifications", type: "text" },
               //{ label: "Backlog (if any)", name: "backlog", type: "text" },
-              { label: "Semester", name: "semester", type: "number" },
+              //{ label: "Semester", name: "semester", type: "number" },
             ].map(({ label, name, type }) => (
               <div key={name}>
                 <Label>{label}</Label>
@@ -190,6 +190,20 @@ const ProfileForm = () => {
                 <option value="No">No</option>
               </select>
             </div>
+
+            {/* No. of Semester Field display */}
+            <div>
+              <Label>Semester</Label>
+              <Input
+                type="number"
+                name="semester"
+                value={profile.semester}
+                onChange={handleChange}
+                placeholder="Enter semester"
+                className="mt-1"
+              />
+            </div>
+
 
             {profile.SGPA.length > 0 && (
               <div>
