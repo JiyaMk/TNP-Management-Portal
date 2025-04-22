@@ -9,13 +9,13 @@ import bcrypt from "bcryptjs";
 // student otp generation & mail sending
 const otpGenerate = async (req, res) => {
     const { email } = req.body;
-    // console.log(email);
+    console.log(email);
 
     //only igdtuw studnts can register
     if(!email.endsWith("@igdtuw.ac.in")) return res.status(400).json({ message: "Only IGDTUW students can register" });
     const otp = otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false, digits: true });
     await Otp.create({ email, otp });
-    // console.log(otp);
+    console.log(otp);
     const transporter = nodeMailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -40,8 +40,11 @@ const otpGenerate = async (req, res) => {
     
     
     transporter.sendMail(message, (error, info) => {
-        if(error) return res.status(500).json({ message: "Error in sending mail" });
-        // console.log("Mail sent info:", info);
+        if(error) {
+            console.log(error);
+            return res.status(500).json({ message: "Error in sending mail" });
+        }
+        console.log("Mail sent info:", info);
         return res.status(200).json({ message: "OTP sent successfully" });
     });
 

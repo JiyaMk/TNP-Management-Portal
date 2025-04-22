@@ -28,6 +28,8 @@ function App() {
           <Route path="/database-gen-page" element={<DatabaseGenPage/>} />
           <Route path="/ProfileForm" element={<ProfileForm/>} />
           <Route path="/form-page" element={<ProfileForm/>} />
+          <Route path="/StudentProfile" element={<StudentProfile/>} />
+          
           
           
         </Routes>

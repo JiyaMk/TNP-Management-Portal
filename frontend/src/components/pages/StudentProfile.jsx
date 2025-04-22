@@ -4,6 +4,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+
+const creditsPerSemester = [22, 22, 23, 22, 22, 22, 21, 22];
+
+const calculateCGPA = (sgpaArray, semester) => {
+  let totalPoints = 0;
+  let totalCredits = 0;
+
+  for (let i = 0; i < semester; i++) {
+    const sgpa = parseFloat(sgpaArray[i]);
+    const credits = creditsPerSemester[i];
+
+    if (!isNaN(sgpa)) {
+      totalPoints += sgpa * credits;
+      totalCredits += credits;
+    }
+  }
+
+  return totalCredits === 0 ? "" : (totalPoints / totalCredits).toFixed(2);
+};
+
+
 const StudentProfile = () => {
   const [isEditing, setIsEditing] = useState(true); 
   const [profile, setProfile] = useState({
@@ -11,6 +32,7 @@ const StudentProfile = () => {
     image: "",
     rollNumber: "",
     branch: "",
+    subBranch: "",
     year: "",
     phone: "",
     semester: "",
@@ -20,7 +42,16 @@ const StudentProfile = () => {
     collegeEmail: "",
     personalEmail: "",
     resumeLink: "",
+    backlog: "",
+    cgpa: "", 
   });
+
+  // Sub-branch options like in ProfileForm
+  const subBranchOptions = {
+    CSE: ["CSE1", "CSE2", "CSE3"],
+    ECE: ["ECE1", "ECE2", "ECE3"],
+    IT: ["IT1", "IT2"],
+  };
 
   // Load profile from Local Storage
   useEffect(() => {
@@ -36,6 +67,15 @@ const StudentProfile = () => {
     localStorage.setItem("studentProfile", JSON.stringify(profile));
   }, [profile]);
 
+  // CGPA calculation
+  useEffect(() => {
+    const semesterCount = parseInt(profile.semester, 10) || 0;
+    const newCGPA = calculateCGPA(profile.sgpa, semesterCount);
+  
+    setProfile((prev) => ({ ...prev, cgpa: newCGPA }));
+  }, [profile.sgpa, profile.semester]);
+  
+
   // Handle Input Change
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +87,10 @@ const StudentProfile = () => {
       if (name === "semester") {
         const semesterCount = parseInt(value, 10) || 0;
         updatedProfile.sgpa = new Array(semesterCount).fill("");
+      }
+
+      if (name === "branch") {
+        updatedProfile.subBranch = "";
       }
 
       return updatedProfile;
@@ -103,14 +147,14 @@ const StudentProfile = () => {
             {[
               { label: "Full Name", name: "fullName", type: "text" },
               { label: "Roll Number", name: "rollNumber", type: "text" },
-              { label: "Branch", name: "branch", type: "text" },
+              //{ label: "Branch", name: "branch", type: "text" },
               { label: "Year", name: "year", type: "number" },
               { label: "Phone Number", name: "phone", type: "tel" },
-              { label: "10th Marks", name: "tenthMarks", type: "number" },
-              { label: "12th Marks", name: "twelfthMarks", type: "number" },
+              { label: "10th Marks (in percentage)", name: "tenthMarks", type: "number" },
+              { label: "12th Marks )in percentage)", name: "twelfthMarks", type: "number" },
               { label: "Resume Link", name: "resumeLink", type: "url" },
               { label: "Certifications", name: "certifications", type: "text" },
-              { label: "Semester", name: "semester", type: "number" },
+              //{ label: "Semester", name: "semester", type: "number" },
             ].map(({ label, name, type }) => (
               <div key={name}  >
                 <Label >{label}</Label>
@@ -129,6 +173,90 @@ const StudentProfile = () => {
               </div>
             ))}
 
+            {/* Branch Dropdown */}
+            <div>
+              <Label>Branch</Label>
+              {isEditing ? (
+                <select
+                  name="branch"
+                  value={profile.branch}
+                  onChange={handleChange}
+                  className="w-full mt-1 p-2 border rounded-md"
+                >
+                  <option value="">Select Branch</option>
+                  <option value="CSE">CSE</option>
+                  <option value="ECE">ECE</option>
+                  <option value="MAE">MAE</option>
+                  <option value="IT">IT</option>
+                  <option value="CSE-AI">CSE-AI</option>
+                  <option value="AI/ML">AI/ML</option>
+                  <option value="ECE-AI">ECE-AI</option>
+                </select>
+              ) : (
+                <p className="p-2 border rounded border-[#3c8c84] mt-2">{profile.branch || "Enter branch"}</p>
+              )}
+            </div>
+
+            {/* Sub-Branch Dropdown */}
+            {subBranchOptions[profile.branch]?.length > 0 && (
+              <div>
+                <Label>Sub-Branch</Label>
+                {isEditing ? (
+                  <select
+                    name="subBranch"
+                    value={profile.subBranch}
+                    onChange={handleChange}
+                    className="w-full mt-1 p-2 border rounded-md"
+                  >
+                    <option value="">Select Sub-Branch</option>
+                    {subBranchOptions[profile.branch].map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <p className="w-full mt-1 p-2 border rounded-md">{profile.subBranch}</p>
+                )}
+              </div>
+            )}
+
+            {/* Backlog Dropdown */}
+            <div>
+              <Label>Backlog (if any)</Label>
+              {isEditing ? (
+                <select
+                  name="backlog"
+                  value={profile.backlog}
+                  onChange={handleChange}
+                  className="w-full mt-1 p-2 border rounded-md"
+                >
+                  <option value="">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              ) : (
+                <p className="p-2 border rounded border-[#3c8c84] mt-2">{profile.backlog || "Enter backlog status"}</p>
+              )}
+            </div>
+
+            {/* No.OF Semester display*/}
+            <div>
+              <Label>Semester</Label>
+              {isEditing ? (
+                <Input
+                  className="border-[#3c8c84] mt-2"
+                  type="number"
+                  name="semester"
+                  value={profile.semester}
+                  onChange={handleChange}
+                  placeholder="Enter semester"
+                />
+              ) : (
+                <p className="p-2 border rounded border-[#3c8c84] mt-2">{profile.semester || "Enter semester"}</p>
+              )}
+            </div>
+            
             {/* SGPA Fields (Dynamically Generated) */}
             {profile.sgpa.length > 0 && (
               <div>
@@ -151,6 +279,17 @@ const StudentProfile = () => {
                 ))}
               </div>
             )}
+
+          
+
+            {/* CGPA Display */}
+            <div>
+              <Label>CGPA</Label>
+              <p className="p-2 border rounded border-[#3c8c84] mt-2 bg-gray-100">
+                {profile.cgpa || "CGPA (calculated automatically)"}
+              </p>
+            </div>
+            
 
             {/* Save or Edit Profile Button */}
             <Button
