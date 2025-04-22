@@ -164,8 +164,8 @@ const DatabasePage = () => {
       </tr>
     </thead>
     <tbody>
-      {filteredStudents.length > 0 ? (
-        filteredStudents.map((student) => (
+      {students.length > 0 ? (
+        students.map((student) => (
           <tr key={student._id}>
             {visibleFields.map((field) => {
               const actualField = fieldMapping[field]; // Get the actual field name from the mapping
