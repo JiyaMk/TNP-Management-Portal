@@ -11,6 +11,8 @@ import DatabaseGenPage from "./components/pages/DatabaseGenPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProfileForm from "./components/pages/ProfileForm";
+import LandingPage from "./components/pages/Landing";
+import Footer from "./components/ui/footer";
 
 
 function App() {
@@ -19,7 +21,7 @@ function App() {
       <Router>
       <Navbar/>
         <Routes>
-          <Route path="/" element={<ManagementHeadDashboard />} />
+          <Route path="/" element={<LandingPage/>} />
           <Route path="/student-dashboard" element={<StudentDashboard />} />
           <Route path="/profile" element={<StudentProfile />} />
           <Route path="/company-profile" element={<CompanyProfile/>} />
@@ -33,6 +35,7 @@ function App() {
           
           
         </Routes>
+        <Footer/>
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnFocusLoss draggable pauseOnHover theme="dark" />
       </Router>
     </ThemeProvider>
