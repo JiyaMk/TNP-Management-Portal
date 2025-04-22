@@ -12,7 +12,7 @@ const otpGenerate = async (req, res) => {
     console.log(email);
 
     //only igdtuw studnts can register
-    if(!email.endsWith("@igdtuw.ac.in")) return res.status(400).json({ message: "Only IGDTUW students can register" });
+    // if(!email.endsWith("@igdtuw.ac.in")) return res.status(400).json({ message: "Only IGDTUW students can register" });
     const otp = otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false, digits: true });
     await Otp.create({ email, otp });
     console.log(otp);
@@ -129,7 +129,7 @@ const loginStudent = async (req,res) => {
     }
 };
 
-const getStudentDetails = async (req, res) => {
+const getStudentProfile = async (req, res) => {
     try {
         const student = await Student.findById(req.student.id).select("-password");
         if (!student) return res.status(404).json({ message: "Student not found" });   
@@ -138,6 +138,17 @@ const getStudentDetails = async (req, res) => {
         return res.status(500).json({ message: "Error in getting student details", error });
     }
 };
+
+const getStudentsDetails = async (req, res) => {
+    try {
+      const students = await Student.find().select("-password"); // Fetch all students
+      if (!students) return res.status(404).json({ message: "No students found" });   
+      return res.status(200).json({ students }); // Send back an array of students
+    } catch (error) {
+      return res.status(500).json({ message: "Error in getting students details", error });
+    }
+  };
+  
 
 const updateStudentDetails = async (req, res) => {
     try {
@@ -162,4 +173,4 @@ const updateStudentDetails = async (req, res) => {
     }
 };
 
-export { otpGenerate, otpVerify, registerStudent, loginStudent, getStudentDetails, updateStudentDetails };
+export { otpGenerate, otpVerify, registerStudent, loginStudent, getStudentsDetails, getStudentProfile, updateStudentDetails };

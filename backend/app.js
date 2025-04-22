@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import authRouter from './routes/authRoute.js';
 import companyRouter from './routes/companyRoute.js';
+import excelRouter from './routes/excelRoute.js';
 const app = express();
 
 app.use(cors({
@@ -16,5 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 // routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/company', companyRouter);
+app.use('/api/v1/excel', excelRouter); 
 
 export default app;
