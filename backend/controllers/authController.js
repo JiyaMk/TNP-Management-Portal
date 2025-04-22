@@ -12,7 +12,8 @@ const otpGenerate = async (req, res) => {
     // console.log(email);
 
     //only igdtuw studnts can register
-    const otp = otpGenerator.generate(6);
+    if(!email.endsWith("@igdtuw.ac.in")) return res.status(400).json({ message: "Only IGDTUW students can register" });
+    const otp = otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false, digits: true });
     await Otp.create({ email, otp });
     // console.log(otp);
     const transporter = nodeMailer.createTransport({
@@ -72,6 +73,24 @@ const registerStudent = async (req,res) => {
         const existingStudent = await Student.findOne({ email });
         if (existingStudent) return res.status(400).json({ message: "Student already registered" });
 
+        const credits = [22, 22, 23, 22, 22, 22, 21, 22];
+        let totalPoints = 0;
+        let totalCredits = 0;
+
+        const parsedSGPA = Array.isArray(SGPA)
+        ? SGPA.map((val) => parseFloat(val))
+        : [];
+
+        for (let i = 0; i < parsedSGPA.length; i++) {
+        if (!isNaN(parsedSGPA[i]) && credits[i]) {
+            totalPoints += parsedSGPA[i] * credits[i];
+            totalCredits += credits[i];
+        }
+        }
+
+        const CGPA =
+        totalCredits > 0 ? parseFloat((totalPoints / totalCredits).toFixed(2)) : null;
+
         let profilePicUrl = null;
         if(req.file){
             const response = await uploadOnCloudinary(req.file.path);
@@ -79,7 +98,7 @@ const registerStudent = async (req,res) => {
             profilePicUrl = response?.secure_url;
         }
         const student = await Student.create({
-            name, email, rollNumber, password, branch, year, semester, phoneNumber, resumeLink, marks10th, marks12th, SGPA, personalMail, backlog,         certifications, profilePic: profilePicUrl
+            name, email, rollNumber, password, branch, year, semester, phoneNumber, resumeLink, marks10th, marks12th, SGPA, personalMail, backlog,         certifications, profilePic: profilePicUrl, CGPA
         });
 
         return res.status(201).json({ message: "Student registered successfully", student });
