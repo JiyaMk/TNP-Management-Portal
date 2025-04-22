@@ -125,7 +125,7 @@ const ProfileForm = () => {
               //{ label: "Semester", name: "semester", type: "number" },
             ].map(({ label, name, type }) => (
               <div key={name}>
-                <Label>{label}</Label>
+                <Label className="mb-2">{label}</Label>
                 <Input
                   type={type}
                   name={name}
@@ -210,7 +210,7 @@ const ProfileForm = () => {
                 <Label>SGPA</Label>
                 {profile.SGPA.map((value, index) => (
                   <div key={index} className="mt-2">
-                    <Label>SGPA {index + 1}</Label>
+                    <Label className="mb-2">SGPA {index + 1}</Label>
                     <Input
                       type="number"
                       value={value}
@@ -235,7 +235,7 @@ const ProfileForm = () => {
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
+              className="w-full bg-[#3c8c84] hover:bg-[#3c8c84]/90 text-white font-bold py-3 px-6 rounded-lg"
             >
               Register
             </Button>

@@ -6,7 +6,7 @@ export default function SignUpPage() {
       {/* Left Side - Image */}
       <div className="hidden md:flex w-1/2 bg-gray-200 items-center justify-center">
         <img
-          src="image.png"
+          src="img4.png"
           alt="Signup Illustration"
           className="w-full h-full object-cover object-center"
         />

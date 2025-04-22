@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const features = [
     {
@@ -38,7 +39,7 @@ export default function LandingPage() {
         <p className="text-lg md:text-xl mb-6 max-w-2xl">
         Powering Placements at IGDTUW with Precision.
         </p>
-        <Button className="text-lg px-12 py-6 mt-12 bg-[#3c8c84]">Get Started</Button>
+      <Link to="/SignUp">  <Button className="text-lg px-12 py-6 mt-12 bg-[#3c8c84]" >Get Started</Button></Link>
       </section>
 
 
