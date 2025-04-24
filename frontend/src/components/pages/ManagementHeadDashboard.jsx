@@ -1,9 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import api, { notify } from "@/utils/apiRequest";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ManagementHeadDashboard = () => {
+  const [listingsData, setListingsData] = useState([]);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const res = await api.get("/company/get-details", { withCredentials: true });
+          setListingsData(res.data.companies);
+        } catch (err) {
+          console.error(err.response?.data?.message || "Failed to fetch companies");
+        }
+      };
+    
+      fetchData(); 
+    }, []);
   const progressData = [
     { company: "Google", date: "2025-04-01" },
     { company: "Amazon", date: "2025-03-28" },
@@ -17,12 +33,7 @@ const ManagementHeadDashboard = () => {
     { company: "Apple", date: "2025-03-15" },
   ];
 
-  const listingsData = [
-    { company: "Tesla", date: "2025-04-02" },
-    { company: "Netflix", date: "2025-03-30" },
-    { company: "IBM", date: "2025-03-27" },
-    { company: "Oracle", date: "2025-03-22" },
-  ];
+  
 
   const [showAll, setShowAll] = useState(false);
 
@@ -32,9 +43,15 @@ const ManagementHeadDashboard = () => {
     // Your logic here
   };
 
-  const handleNotify = (item) => {
+  const handleNotify = async (item) => {
     console.log(`Notifying for ${item.company}`);
-    // Your logic here
+    try {
+      const res = await notify(item._id); 
+      toast.success(`Notification sent: ${res.data.message}`);
+    } catch (error) {
+      console.error("Notify error:", error);
+      toast.error("Failed to send notification");
+    }
   };
 
   return (
@@ -42,7 +59,7 @@ const ManagementHeadDashboard = () => {
       <h1 className="text-center font-extrabold text-3xl text-[#3c8c84]">Dashboard</h1>
 
       {/* Progress Section */}
-      <div className="p-4 rounded-lg shadow-md">
+      {/* <div className="p-4 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">
           Hi [Name], Your data has been sent to:
         </h2>
@@ -69,23 +86,26 @@ const ManagementHeadDashboard = () => {
             </Button>
           )}
         </div>
-      </div>
+      </div> */}
 
       {/* Listings Section */}
       <div className="p-4 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Company Listings</h2>
         {listingsData.map((item, index) => (
+          console.log(item),
           <Card key={index} className="mb-2 border-[#3c8c84]">
             <CardContent className="p-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4 ">
               {/* Company Name and Date */}
-              <div>
-                <span className="font-medium">{item.company}</span>
-                <span className="text-gray-500 ml-4">{item.date}</span>
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+              <div className="mb-2 md:mb-0">
+                <h3 className="text-xl font-bold">{item.name}</h3>
+                <p className="text-sm text-gray-600">{item.role}</p>
+              </div>
               </div>
 
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                <Link to="database-gen-page" className="w-full sm:w-40">
+                <Link to="/database-gen-page" className="w-full sm:w-40">
                   <Button
                     variant="outline"
                     className="w-full"
@@ -108,6 +128,7 @@ const ManagementHeadDashboard = () => {
         ))}
       </div>
     </div>
+    
   );
 };
 

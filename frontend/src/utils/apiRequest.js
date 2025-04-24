@@ -28,5 +28,14 @@ export const exportFilteredStudents = (filters, fields) => {
   });
 };
 export const getStudentDetails = () => api.get('/auth/details', {withCredentials: true});
+export const getStudentProfile = () => {
+  const token = localStorage.getItem("loginToken");
+  return api.get("/auth/profile", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+export const notify = (id) =>
+  api.post(`/company/notify/${id}`, {}, { withCredentials: true });
+
 
 export default api;

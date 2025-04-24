@@ -3,6 +3,7 @@ import { FaFilter, FaList } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { exportFilteredStudents, getStudentDetails } from "@/utils/apiRequest"; 
+import { useNavigate } from "react-router-dom";
 
 const fields = [
   "Name", "Roll No", "10th Marks", "12th Marks", "Backlogs", "Phone Number",
@@ -27,9 +28,18 @@ const fieldMapping = {
 const branches = ["CSE", "ECE", "IT", "ECE-AI", "AI-ML", "MECH", "CIVIL"];
 
 const DatabasePage = () => {
+  const navigate = useNavigate();
   const [students, setStudents] = useState([]); 
   const [visibleFields, setVisibleFields] = useState(fields);
   const [filters, setFilters] = useState({ tenth: 0, twelfth: 0, cgpa: 0, backlog: "all", branch: "all" });
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "management_head") {
+      navigate("/unauthorized"); 
+    }
+  }, [navigate]);
+  
 
   useEffect(() => {
     const fetchStudentDataFromAPI = async () => {
@@ -45,6 +55,7 @@ const DatabasePage = () => {
     fetchStudentDataFromAPI();
   }, []);
 
+  
   useEffect(() => {
     console.log("Students state updated:", students);
   }, [students]);

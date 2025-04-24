@@ -19,12 +19,30 @@ export function LoginForm({ className, ...props }) {
     try {
       const res = await api.post("/auth/login", { email, password });
       const token = res.data.token;
+      console.log("Token:", token);
+      const role = res.data.role;
       localStorage.setItem("loginToken", token);
+      localStorage.setItem("role", role); 
+      console.log("Role:", role);
       // console.log("JWT token:", token);
       toast.success("Login successful!");
+      if(role === "student") {
       setTimeout(() => {
         navigate("/student-dashboard");
       }, 1000);
+    }
+    else if(role === "management_head") {
+      setTimeout(() => {
+        navigate("/management-head-dashboard");
+
+      }, 1000);
+    }
+    else if(role === "pr_head") {
+      setTimeout(() => {
+        navigate("/company-profile");
+
+      }, 1000);
+    }
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     }

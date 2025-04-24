@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +17,13 @@ const CompanyProfile = () => {
     lastDate: "",
   });
   const navigate = useNavigate();
+  
+  useEffect(() => {
+      const role = localStorage.getItem("role");
+      if (role !== "pr_head") {
+        navigate("/unauthorized"); 
+      }
+    }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

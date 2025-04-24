@@ -42,7 +42,7 @@ const StudentDashboard = () => {
     <div className="p-6 space-y-6">
       <h1 className="text-center font-extrabold text-3xl text-[#3c8c84] ">Dashboard</h1>
       {/* Progress Section */}
-      <div className=" p-4 rounded-lg shadow-md">
+      {/* <div className=" p-4 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Hi [Name], Your data has been sent to:</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {progressData.slice(0, showAll ? progressData.length : 5).map((item, index) => (
@@ -61,7 +61,7 @@ const StudentDashboard = () => {
           </Button>
         )}
         </div>
-      </div>
+      </div> */}
 
       {/* Listings Section */}
       <div className=" p-15 rounded-lg shadow-md">
